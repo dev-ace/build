@@ -1,0 +1,41 @@
+---
+- name: Install packages necessary to compile latest Python
+  yum: name={{ item }} state=present
+  with_items:
+    - zlib-devel
+    - bzip2-devel
+    - openssl-devel
+    - ncurses-devel
+    - sqlite-devel
+    - readline-devel
+    - tk-devel
+
+- name: Install Development tools group
+  yum: name="@Development tools" state=present
+
+- name: Download, compile, and install Python
+  get_url: url=http://python.org/ftp/python/2.7.5/Python-2.7.5.tgz dest=/root/Python-2.7.5.tgz
+
+- command: /bin/tar zvxf /root/Python-2.7.5.tgz
+ 
+- command: ./configure --prefix=/usr/local
+  args:
+    chdir: /root/Python-2.7.5/
+
+- command: make altinstall
+  args:
+    chdir: /root/Python-2.7.5/
+
+- name: Download, compile, and install Distribute
+  get_url: url=http://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz dest=/root/distribute-0.6.49.tar.gz
+
+- command: /bin/tar zvxf /root/distribute-0.6.49.tar.gz
+
+- command: /usr/local/bin/python2.7 setup.py install
+  args:
+    chdir: /root/distribute-0.6.49/
+
+- name: Setup virtualenv and pip
+  command: /usr/local/bin/easy_install-2.7 virtualenv pip
+
+- command: /bin/rm -rf /root/Python-2.7.5/ /root/distribute-0.6.49/ /root/Python-2.7.5.tgz /root/distribute-0.6.49.tar.gz

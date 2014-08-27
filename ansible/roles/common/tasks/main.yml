@@ -41,7 +41,7 @@
 
 # Execute commands to set up services
 - command: /bin/ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
-- command: /bin/sed -i 's\ZONE=.*\ZONE="America/Chicago"\' /etc/sysconfig/clock
+- command: /bin/sed -i 's:ZONE=.*:ZONE="America/Chicago":' /etc/sysconfig/clock
 
 - service: name=sshd enabled=yes state=restarted
 
