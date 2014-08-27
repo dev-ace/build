@@ -1,0 +1,49 @@
+- name: Install EPEL repo
+  yum: name=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
+
+- name: Upgrade all packages
+  yum: name=* state=latest
+
+- name: Install Development tools group
+  yum: name="@Development tools" state=present
+
+- name: Install base packages
+  yum: name={{ item }} state=present
+  with_items:
+    - fail2ban
+    - xterm
+    - ntp
+    - yum-cron
+    - zlib-devel
+    - bzip2-devel
+    - openssl-devel
+    - ncurses-devel
+    - sqlite-devel
+    - readline-devel
+    - tk-devel
+    - telnet
+    - nmap
+    - bind-utils
+    - screen
+    - mlocate
+    - sysstat
+    - tree
+    - git
+    - mailx
+
+# Turn on and enable the various services
+- service: name=fail2ban  enabled=yes state=started
+- service: name=yum-cron  enabled=yes state=started
+- service: name=ntpd  enabled=yes state=started
+
+# Disable selinux
+- selinux: state=disabled
+
+# Execute commands to set up services
+- command: /bin/ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+- command: /bin/sed -i 's\ZONE=.*\ZONE="America/Chicago"\' /etc/sysconfig/clock
+
+- service: name=sshd enabled=yes state=restarted
+
+
+

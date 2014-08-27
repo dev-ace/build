@@ -1,0 +1,50 @@
+---
+- name: RHEL - install packages necessary to compile lsyncd
+  yum: name={{ item }} state=present
+  with_items:
+    - lua
+    - lua-devel
+    - pkgconfig
+    - gcc
+    - asciidoc
+  when: ansible_os_family == 'RedHat'
+
+- name: Debian - install packages necessary to compile lsyncd
+  apt: pkg={{ item }} state=installed update_cache=true
+  with_items:
+  - lua5.1
+  - liblua5.1-dev
+  - pkg-config
+  - rsync
+  - asciidoc
+  when: ansible_os_family == 'Debian'
+
+- name: Download, compile, and install lsyncd
+  get_url: url=https://lsyncd.googlecode.com/files/lsyncd-2.1.5.tar.gz dest=/root/lsyncd-2.1.5.tar.gz
+
+- command: /bin/tar zvxf /root/lsyncd-2.1.5.tar.gz
+ 
+- command: ./configure && make && make install
+  args:
+    chdir: /root/lsyncd-2.1.5/
+
+- name : RHEL - Copy init file to proper location
+  template: src=lsyncd-redhat.j2 dest=/etc/init.d/lsyncd owner=root group=root
+#  command: chmod 0755 /etc/init.d/lsyncd
+  when: ansible_os_family == 'RedHat'
+
+- name: Debian - Copy init file to proper location
+  template: src=lsyncd-debian.j2 dest=/etc/init/lsyncd.conf
+#  command: ln -s /lib/init/upstart-job /etc/init.d/lsyncd
+  when: ansible_os_family == 'Debian'
+
+- name: Place logrotate template in proper location
+  template: src=lsyncd-logrotate.j2 dest=/etc/logrotate.d/lsyncd
+
+- name: Place config file in proper location
+  get_url: url=https://raw.githubusercontent.com/ejhammons/slavemaster/master/configure/etc/lsyncd.conf dest=/etc/lsyncd.lua
+
+- name: Add more inotify watches
+  sysctl: name=fs.inotify.max_user_watches value=16384 state=present reload=yes ignoreerrors=yes
+
+
