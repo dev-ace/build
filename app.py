@@ -13,6 +13,7 @@ app = Bottle(__name__)
 debug(True)
 
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
+ANS_PATH='/var/www/vhosts/build/ansible/'
 
 def install_stuff(user, ip_list, sshpass, pb_name): 
     playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
@@ -29,7 +30,17 @@ def install_stuff(user, ip_list, sshpass, pb_name):
     )
 
     results = pb.run()
-    return
+    return results
+
+def input_validation(username, sshpass, ip_addr):
+    # Check to make sure no fields were left blank
+    if (sshpass == '' or username == '' or ip_addr == ''):
+        return template('answer', answer='Please fill out all fields!', status='Error!')
+
+    #Input validation
+    pattern = r'[^\.0-9,]'
+    if re.search(pattern, ip_addr):
+        return template('answer', answer='Invalid IP!', status='Error!')
 
 @app.route('/')
 def index():
@@ -37,7 +48,7 @@ def index():
     return template('index')
 
 @app.route('/', method=['POST'])
-def do_something():
+def do_cool_things():
     # Collect all the information to make the server from the form fields
     sshpass = str(request.forms.get('ssh_pass'))
     username = str(request.forms.get('username'))
@@ -46,18 +57,13 @@ def do_something():
     memcached = str(request.forms.get('memcached'))
     varnish = str(request.forms.get('varnish'))
 
-    # Check to make sure no fields were left blank
-    if (sshpass == '' or username == '' or ip_addr == ''):
-        return template('answer', answer='Please fill out all fields!', status='Error!')
-
-    #Input validation
-    pattern = r'[^\.0-9,]'
-    if re.search(pattern, ip_addr):
-        return template('answer', answer='Invalid IP!', status='Error!') 
-
+    input_validation(username, sshpass, ip_addr)
     ip_addr += ','
 
-    results = install_stuff(username, ip_addr, sshpass, 'ansible/lsyncd.yml')
+    if lsyncd != '':
+        play = ANS_PATH + lsyncd
+
+    results = install_stuff(username, ip_addr, sshpass, play)
 
     return template('answer', answer=str(results), status="Success!")
 

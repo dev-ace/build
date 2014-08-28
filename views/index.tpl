@@ -14,9 +14,9 @@
     <td><strong>IP Address: </strong><input type="text" name="ip_addr"></td>
   </tr>
   <tr>
-    <td><input type="checkbox" name="lsyncd" value="on">lsyncd</td>
-    <td><input type="checkbox" name="varnish" value="on">varnish</td>
-    <td><input type="checkbox" name="memcached" value="on">memcached</td>
+    <td><input type="checkbox" name="lsyncd" value="lsyncd.yml">lsyncd</td>
+    <td><input type="checkbox" name="varnish" value="varnish.yml">varnish</td>
+    <td><input type="checkbox" name="memcached" value="memcached.yml">memcached</td>
   </tr>
       <tr>
         <td colspan='3'><center><input type="submit" value="Install the things!">&nbsp&nbsp
