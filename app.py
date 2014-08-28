@@ -49,6 +49,9 @@ def index():
 
 @app.route('/', method=['POST'])
 def do_cool_things():
+    plays = []
+    results = []
+    
     # Collect all the information to make the server from the form fields
     sshpass = str(request.forms.get('ssh_pass'))
     username = str(request.forms.get('username'))
@@ -60,10 +63,17 @@ def do_cool_things():
     input_validation(username, sshpass, ip_addr)
     ip_addr += ','
 
-    if lsyncd != '':
-        play = ANS_PATH + lsyncd
+    if lsyncd != 'None':
+        plays.append(ANS_PATH + lsyncd)
 
-    results = install_stuff(username, ip_addr, sshpass, play)
+    if memcached != 'None':
+        plays.append(ANS_PATH + memcached)
+
+    if varnish != 'None':
+        plays.append(ANS_PATH + varnish)
+        
+    for play in plays:
+        results.append(install_stuff(username, ip_addr, sshpass, play))
 
     return template('answer', answer=str(results), status="Success!")
 
