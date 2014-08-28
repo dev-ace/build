@@ -2,7 +2,7 @@
 
 #pip install ansible pyyaml jinja2 paramiko bottle
 
-import urllib, json, os, jinja2
+import urllib, json, os, jinja2, re
 from bottle import Bottle, request, template, TEMPLATE_PATH
 from bottle import debug
 from ansible.playbook import PlayBook
@@ -40,20 +40,26 @@ def index():
 def do_something():
     # Collect all the information to make the server from the form fields
     sshpass = str(request.forms.get('ssh_pass'))
-    user = str(request.forms.get('username'))
+    username = str(request.forms.get('username'))
     ip_addr = str(request.forms.get('ip_addr'))
     lsyncd = str(request.forms.get('lsyncd'))
     memcached = str(request.forms.get('memcached'))
     varnish = str(request.forms.get('varnish'))
 
     # Check to make sure no fields were left blank
-    #if (sshpass == '' or username == '' or ip_addr == ''):
-    #    return template('answer', answer='Please fill out all fields!', status='Error!')
+    if (sshpass == '' or username == '' or ip_addr == ''):
+        return template('answer', answer='Please fill out all fields!', status='Error!')
+
+    #Input validation
+    pattern = r'[^\.0-9,]'
+    if re.search(pattern, ip_addr):
+        return template('answer', answer='Invalid IP!', status='Error!') 
 
     ip_addr += ','
-    install_stuff(user, ip_addr, sshpass, 'ansible/lsyncd.yml')
 
-    return
+    results = install_stuff(username, ip_addr, sshpass, 'ansible/lsyncd.yml')
+
+    return template('answer', answer=str(results), status="Success!")
 
 if __name__ == '__main__':
     app.run()
