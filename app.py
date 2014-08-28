@@ -42,6 +42,19 @@ def input_validation(username, sshpass, ip_addr):
     if re.search(pattern, ip_addr):
         return template('answer', answer='Invalid IP!', status='Error!')
 
+def write_playbook(plays):
+    filename = ANS_PATH + 'install.yml'
+    f = open(filename, 'w')
+    f.write('---\n')
+    f.write('- hosts: all\n')
+    f.write('  user: root\n')
+    f.write('  roles:\n')
+    for play in plays:
+        f.write('    - ' + play + '\n')
+    f.close()
+    
+    return
+
 @app.route('/')
 def index():
     # Return index template on GET or HEAD requests
@@ -50,7 +63,6 @@ def index():
 @app.route('/', method=['POST'])
 def do_cool_things():
     plays = []
-    results = []
     
     # Collect all the information to make the server from the form fields
     sshpass = str(request.forms.get('ssh_pass'))
@@ -58,24 +70,25 @@ def do_cool_things():
     ip_addr = str(request.forms.get('ip_addr'))
     lsyncd = str(request.forms.get('lsyncd'))
     memcached = str(request.forms.get('memcached'))
-    varnish = str(request.forms.get('varnish'))
+    varnishd = str(request.forms.get('varnishd'))
 
     input_validation(username, sshpass, ip_addr)
     ip_addr += ','
 
     if lsyncd != 'None':
-        plays.append(ANS_PATH + lsyncd)
+        plays.append(lsyncd)
 
     if memcached != 'None':
-        plays.append(ANS_PATH + memcached)
+        plays.append(memcached)
 
-    if varnish != 'None':
-        plays.append(ANS_PATH + varnish)
-        
-    for play in plays:
-        results.append(install_stuff(username, ip_addr, sshpass, play))
+    if varnishd != 'None':
+        plays.append(varnishd)
+    
+    write_playbook(plays)
+    playbook = ANS_PATH + 'install.yml'
+    results = install_stuff(username, ip_addr, sshpass, playbook)
 
-    return template('answer', answer=str(results), status="Success!")
+    return template('answer', answer=results, status="Success!")
 
 if __name__ == '__main__':
     app.run()
