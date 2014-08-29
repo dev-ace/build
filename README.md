@@ -23,7 +23,7 @@ This app will be used to speed up the installation of various services during a 
     * - [ ] testing
   * - [x] varnishd
     *  - [ ] testing
-  * - [ ] memcached
+  * - [x] memcached
     * - [ ] testing
 
 A more comprehensive list will be added as warranted.
