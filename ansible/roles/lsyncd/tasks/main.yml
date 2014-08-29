@@ -29,13 +29,15 @@
     chdir: /root/lsyncd-2.1.5/
 
 - name : RHEL - Copy init file to proper location
-  template: src=lsyncd-redhat.j2 dest=/etc/init.d/lsyncd owner=root group=root
-#  command: chmod 0755 /etc/init.d/lsyncd
+  template: src=lsyncd-redhat.j2 dest=/etc/init.d/lsyncd owner=root group=root mode=0755
   when: ansible_os_family == 'RedHat'
 
 - name: Debian - Copy init file to proper location
   template: src=lsyncd-debian.j2 dest=/etc/init/lsyncd.conf
-#  command: ln -s /lib/init/upstart-job /etc/init.d/lsyncd
+  when: ansible_os_family == 'Debian'
+
+- name: Link the script to upstart
+  command: ln -s /lib/init/upstart-job /etc/init.d/lsyncd
   when: ansible_os_family == 'Debian'
 
 - name: Place logrotate template in proper location
@@ -46,5 +48,3 @@
 
 - name: Add more inotify watches
   sysctl: name=fs.inotify.max_user_watches value=16384 state=present reload=yes ignoreerrors=yes
-
-
