@@ -15,6 +15,7 @@ debug(True)
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
 ANS_PATH='/var/www/vhosts/build/ansible/'
 
+## programatically call the ansible playbook
 def install_stuff(ip_list, sshpass, pb_name): 
     playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
     stats = callbacks.AggregateStats()
@@ -32,6 +33,7 @@ def install_stuff(ip_list, sshpass, pb_name):
     results = pb.run()
     return results
 
+## Check various types of input for correctness
 def input_validation(sshpass, ip_addr):
     # Check to make sure no fields were left blank
     if (sshpass == '' or ip_addr == ''):
@@ -41,7 +43,9 @@ def input_validation(sshpass, ip_addr):
     pattern = r'[^\.0-9,]'
     if re.search(pattern, ip_addr):
         return template('answer', answer='Invalid IP!', status='Error!')
+    return
 
+## Write the plays that were taken from user input to a file
 def write_playbook(plays):
     filename = ANS_PATH + str(uuid.uuid1())
     f = open(filename, 'w')
@@ -75,6 +79,7 @@ def do_cool_things():
     input_validation(sshpass, ip_addr)
     ip_addr += ','
 
+    # Test which plays were selected
     if lsyncd != 'None':
         plays.append(lsyncd)
 
@@ -84,6 +89,7 @@ def do_cool_things():
     if varnishd != 'None':
         plays.append(varnishd)
     
+    # call the playbook on a server, then delete it
     playbook = write_playbook(plays)
     results = install_stuff(ip_addr, sshpass, playbook)
     os.remove(playbook)
