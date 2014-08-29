@@ -1,0 +1,19 @@
+---
+- name: Install package for memcache - RHEL
+  yum: name=memcached state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: Install package for memcache - Debian
+  apt: pkg= memcached state=installed update_cache=true
+  when: ansible_os_family == 'Debian'
+
+- name: Copy config file to proper location
+  template: src=ubuntu-conf.j2 dest=/etc/memcached.conf
+  when: ansible_os_family == 'Debian'
+
+- name: Copy config file to proper location - RHEL
+  template: src=cent-conf.j2 dest=/etc/sysconfig/memcached
+  when: ansible_os_family == 'RedHat'
+
+- name: Enable and start service
+  service: name=memcached state=started enabled=yes
