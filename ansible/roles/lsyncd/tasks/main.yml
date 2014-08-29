@@ -39,7 +39,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: Link the script to upstart
-  command: ln -s /lib/init/upstart-job /etc/init.d/lsyncd
+  command: ln -sf /lib/init/upstart-job /etc/init.d/lsyncd
   when: ansible_os_family == 'Debian'
 
 - name: Place logrotate template in proper location

@@ -4,7 +4,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Install package for memcache - Debian
-  apt: pkg= memcached state=installed update_cache=true
+  apt: pkg=memcached state=installed update_cache=true
   when: ansible_os_family == 'Debian'
 
 - name: Copy config file to proper location

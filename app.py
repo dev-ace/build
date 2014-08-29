@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 #pip install ansible pyyaml jinja2 paramiko bottle
-
 import urllib, json, os, jinja2, re, uuid
 from bottle import Bottle, request, template, TEMPLATE_PATH
 from bottle import debug
