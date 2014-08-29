@@ -39,11 +39,11 @@
   when: ansible_os_family == 'Debian'
 
 - name: Change port.conf - RHEL
-  command: sed -i "s/Listen 80\$/Listen $BACKEND_PORT/g" /etc/httpd/ports.conf
+  command: sed -i "s/Listen 80\$/Listen 8080/g" /etc/httpd/ports.conf
   when: ansible_os_family == 'RedHat'
 
 - name: Change port.conf - Debian
-  command: sed -i "s/Listen 80\$/Listen $BACKEND_PORT/g" /etc/apache2/ports.conf
+  command: sed -i "s/Listen 80\$/Listen 8080/g" /etc/apache2/ports.conf
   when: ansible_os_family == 'Debian'
 
 - command: sed -i "s/NameVirtualHost \*:80\$/NameVirtualHost \*:$BACKEND_PORT/g" /etc/httpd/ports.conf
@@ -53,11 +53,11 @@
   when: ansible_os_family == 'Debian'
 
 - name: Change vhosts - RHEL 
-  command: sed -i "s/:80>/:$BACKEND_PORT>/g" /etc/httpd/vhost.d/*
+  shell: sed -i 's/:80>/:8080>/g' /etc/httpd/vhost.d/*
   when: ansible_os_family == 'RedHat'
 
 - name: Change vhosts - Debian
-  command: sed -i "s/:80>/:$BACKEND_PORT>/g" /etc/apache2/sites-available/*
+  shell: sed -i "s/:80>/:8080>/g" /etc/apache2/sites-available/*
   when: ansible_os_family == 'Debian'
 
 - name: Change varnish listen port - RHEL
@@ -66,10 +66,10 @@
 
 - name: Change varnish listen port - Debian
   command: sed -i 's/^DAEMON_OPTS="-a :6081/DAEMON_OPTS="-a :80/g' /etc/default/varnish
-  when: ansible_os_family = 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - command: sed -i 's/START=no/START=yes/' /etc/default/varnish
-  when: ansible_os_family = 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: Restart apache - RHEL
   service: name=httpd state=restarted
@@ -77,7 +77,7 @@
 
 - name: Restart apache - Debian
   service: name=apache2 state=restarted
-  when: ansible_os_family = 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: Start and chkconfig varnish
   service: name=varnish state=started enabled=yes

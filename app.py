@@ -15,12 +15,12 @@ debug(True)
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
 ANS_PATH='/var/www/vhosts/build/ansible/'
 
-def install_stuff(user, ip_list, sshpass, pb_name): 
+def install_stuff(ip_list, sshpass, pb_name): 
     playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
     stats = callbacks.AggregateStats()
     runner_cb = callbacks.PlaybookRunnerCallbacks(stats, verbose=utils.VERBOSITY)
 
-    pb = PlayBook(remote_user=user,
+    pb = PlayBook(remote_user='rack',
         remote_pass=sshpass,
         playbook=pb_name,
         callbacks=playbook_cb,
@@ -32,9 +32,9 @@ def install_stuff(user, ip_list, sshpass, pb_name):
     results = pb.run()
     return results
 
-def input_validation(username, sshpass, ip_addr):
+def input_validation(sshpass, ip_addr):
     # Check to make sure no fields were left blank
-    if (sshpass == '' or username == '' or ip_addr == ''):
+    if (sshpass == '' or ip_addr == ''):
         return template('answer', answer='Please fill out all fields!', status='Error!')
 
     #Input validation
@@ -47,7 +47,8 @@ def write_playbook(plays):
     f = open(filename, 'w')
     f.write('---\n')
     f.write('- hosts: all\n')
-    f.write('  user: root\n')
+    f.write('  user: rack\n')
+    f.write('  sudo: yes\n')
     f.write('  roles:\n')
     for play in plays:
         f.write('    - ' + play + '\n')
@@ -66,13 +67,12 @@ def do_cool_things():
     
     # Collect all the information to make the server from the form fields
     sshpass = str(request.forms.get('ssh_pass'))
-    username = str(request.forms.get('username'))
     ip_addr = str(request.forms.get('ip_addr'))
     lsyncd = str(request.forms.get('lsyncd'))
     memcached = str(request.forms.get('memcached'))
     varnishd = str(request.forms.get('varnishd'))
 
-    input_validation(username, sshpass, ip_addr)
+    input_validation(sshpass, ip_addr)
     ip_addr += ','
 
     if lsyncd != 'None':
@@ -86,7 +86,7 @@ def do_cool_things():
     
     write_playbook(plays)
     playbook = ANS_PATH + 'install.yml'
-    results = install_stuff(username, ip_addr, sshpass, playbook)
+    results = install_stuff(ip_addr, sshpass, playbook)
 
     return template('answer', answer=results, status="Success!")
 

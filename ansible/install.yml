@@ -1,5 +1,8 @@
 ---
 - hosts: all
-  user: root
+  user: rack
+  sudo: yes
   roles:
+    - lsyncd
     - memcached
+    - varnishd

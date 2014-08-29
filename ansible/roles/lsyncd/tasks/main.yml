@@ -23,6 +23,8 @@
   get_url: url=https://lsyncd.googlecode.com/files/lsyncd-2.1.5.tar.gz dest=/root/lsyncd-2.1.5.tar.gz
 
 - command: /bin/tar zvxf /root/lsyncd-2.1.5.tar.gz
+  args:
+    chdir: /root/
  
 - command: ./configure && make && make install
   args:

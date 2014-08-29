@@ -1,17 +1,16 @@
 <!doctype html>
-<title>Welcome to the Build Out tool</title>
+<title>Welcome to the Build Assistant beta v0.01</title>
 <link rel="shortcut icon" href="/static/build.png">
 <body bgcolor="black">
 <font color="grey">
 <img src="/static/build.png" align="left" height="64" width="64">
 <img src="/static/build.png" align="right" height="64" width="64">
-<center><strong>Welcome to the Build Out tool</center></strong><br><br>
+<center><strong>Welcome to the Build Assistant beta v0.01</center></strong><br><br>
 <table style="width:500px" align="center">
 <form method="POST">
   <tr>
-    <td><strong>Username: </strong>&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="username"></td>
-    <td><strong>SSH Pass: </strong><input type="text" name="ssh_pass"></td>
     <td><strong>IP Address: </strong><input type="text" name="ip_addr"></td>
+    <td><strong>Rack Pass: </strong><input type="text" name="ssh_pass"></td>
   </tr>
   <tr>
     <td><input type="checkbox" name="lsyncd" value="lsyncd">lsyncd</td>
