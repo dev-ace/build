@@ -8,31 +8,72 @@
   yum: name=varnish state=present
   when: ansible_os_family == 'RedHat'
 
+- name: Install varnish repo key - Debian
+  apt_key: url=http://repo.varnish-cache.org/debian/GPG-key.txt state=present
+  when: ansible_os_family == 'Debian'
+
+- name: Add varnish repo - Debian
+  apt_repository: repo='deb http://repo.varnish-cache.org/ubuntu/ lucid varnish-3.0' state=present
+  when: ansible_os_family == 'Debian'
+
+- name: Update cache and install varnish
+  apt: update_cache=yes name={{ item }} state=present
+  when: ansible_os_family == 'Debian'
+  with_items:
+    - varnish
+    - libvarnishapi1
+
 - name: Move default vcl
   command: mv /etc/varnish/default.vcl /etc/varnish/default.vcl.orig
 
-- name: Download varnish vcl and place in proper location
+- name: Place stock vcl in proper location - RHEL
   template: src=cent-vcl.j2 dest=/etc/varnish/default.vcl
+  when: ansible_os_family == 'RedHat'
+
+- name: Place stock vcl in proper location - Debian
+  template: src=ubuntu-vcl.j2 dest=/etc/varnish/default.vcl
+  when: ansible_os_family == 'Debian'
 
 - name: Change port.conf - RHEL
   command: sed -i "s/Listen 80\$/Listen $BACKEND_PORT/g" /etc/httpd/ports.conf
   when: ansible_os_family == 'RedHat'
 
+- name: Change port.conf - Debian
+  command: sed -i "s/Listen 80\$/Listen $BACKEND_PORT/g" /etc/apache2/ports.conf
+  when: ansible_os_family == 'Debian'
+
 - command: sed -i "s/NameVirtualHost \*:80\$/NameVirtualHost \*:$BACKEND_PORT/g" /etc/httpd/ports.conf
   when: ansible_os_family == 'RedHat'
+
+- command: sed -i "s/NameVirtualHost \*:80\$/NameVirtualHost \*:$BACKEND_PORT/g" /etc/apache2/ports.conf
+  when: ansible_os_family == 'Debian'
 
 - name: Change vhosts - RHEL 
   command: sed -i "s/:80>/:$BACKEND_PORT>/g" /etc/httpd/vhost.d/*
   when: ansible_os_family == 'RedHat'
 
+- name: Change vhosts - Debian
+  command: sed -i "s/:80>/:$BACKEND_PORT>/g" /etc/apache2/sites-available/*
+  when: ansible_os_family == 'Debian'
+
 - name: Change varnish listen port - RHEL
   command: sed -i 's/VARNISH_LISTEN_PORT=6081$/VARNISH_LISTEN_PORT=80/g' /etc/sysconfig/varnish
   when: ansible_os_family == 'RedHat'
+
+- name: Change varnish listen port - Debian
+  command: sed -i 's/^DAEMON_OPTS="-a :6081/DAEMON_OPTS="-a :80/g' /etc/default/varnish
+  when: ansible_os_family = 'Debian'
+
+- command: sed -i 's/START=no/START=yes/' /etc/default/varnish
+  when: ansible_os_family = 'Debian'
 
 - name: Restart apache - RHEL
   service: name=httpd state=restarted
   when: ansible_os_family == 'RedHat'
 
+- name: Restart apache - Debian
+  service: name=apache2 state=restarted
+  when: ansible_os_family = 'Debian'
+
 - name: Start and chkconfig varnish
   service: name=varnish state=started enabled=yes
-  when: ansible_os_family == 'RedHat'
