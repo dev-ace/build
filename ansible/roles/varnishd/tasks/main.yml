@@ -14,7 +14,11 @@
 
 - name: Add varnish repo - Debian
   apt_repository: repo='deb http://repo.varnish-cache.org/ubuntu/ lucid varnish-3.0' state=present
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian' and ansible_lsb.release == '12.04'
+
+- name: Add varnish repo - Debian
+  apt_repository: repo='deb http://repo.varnish-cache.org/ubuntu/ trusty varnish-3.0' state=present
+  when: ansible_os_family == 'Debian' and ansible_lsb.release == '14.04'
 
 - name: Update cache and install varnish
   apt: update_cache=yes name={{ item }} state=present
