@@ -14,9 +14,11 @@ This app will be used to speed up the installation of various services during a 
 
 * - [x] UI
   * - [x] Basic Functionality
+  * - [x] Use rack user
   * - [ ] Error Checking
-  * - [ ] Unique playbook writen in realtime
+  * - [x] Unique playbook name writen in realtime
   * - [ ] Threading for scalability
+  * - [ ] Make it pretty
   * - [ ] Testing
 * - [x] Playbooks & Plays
   * - [x] lsyncd

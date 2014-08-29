@@ -2,7 +2,7 @@
 
 #pip install ansible pyyaml jinja2 paramiko bottle
 
-import urllib, json, os, jinja2, re
+import urllib, json, os, jinja2, re, uuid
 from bottle import Bottle, request, template, TEMPLATE_PATH
 from bottle import debug
 from ansible.playbook import PlayBook
@@ -43,7 +43,7 @@ def input_validation(sshpass, ip_addr):
         return template('answer', answer='Invalid IP!', status='Error!')
 
 def write_playbook(plays):
-    filename = ANS_PATH + 'install.yml'
+    filename = ANS_PATH + str(uuid.uuid1())
     f = open(filename, 'w')
     f.write('---\n')
     f.write('- hosts: all\n')
@@ -54,7 +54,7 @@ def write_playbook(plays):
         f.write('    - ' + play + '\n')
     f.close()
     
-    return
+    return filename
 
 @app.route('/')
 def index():
@@ -84,9 +84,9 @@ def do_cool_things():
     if varnishd != 'None':
         plays.append(varnishd)
     
-    write_playbook(plays)
-    playbook = ANS_PATH + 'install.yml'
+    playbook = write_playbook(plays)
     results = install_stuff(ip_addr, sshpass, playbook)
+    os.remove(playbook)
 
     return template('answer', answer=results, status="Success!")
 
