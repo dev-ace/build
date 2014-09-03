@@ -17,7 +17,8 @@ This app will be used to speed up the installation of various services during a 
   * - [x] Use rack user
   * - [ ] Error Checking
   * - [x] Unique playbook name writen in realtime
-  * - [ ] Threading for scalability
+  * - [x] Threading for scalability
+    * - [x] begun passing work to celery
   * - [ ] Make it pretty
   * - [ ] Testing
 * - [x] Playbooks & Plays
