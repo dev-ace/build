@@ -11,7 +11,7 @@ app = Bottle(__name__)
 debug(True)
 
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
-VERSION='v0.23 beta'
+VERSION='v0.27 beta'
 
 @app.route('/status')
 def status():
