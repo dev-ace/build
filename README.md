@@ -15,10 +15,12 @@ This app will be used to speed up the installation of various services during a 
 * - [x] UI
   * - [x] Basic Functionality
   * - [x] Use rack user
-  * - [ ] Error Checking
+  * - [x] Error Checking
+    * - [x] Some error checking in place, much more needed
   * - [x] Unique playbook name writen in realtime
   * - [x] Threading for scalability
     * - [x] begun passing work to celery
+  * - [x] Status Page of Tasks
   * - [ ] Make it pretty
   * - [ ] Testing
 * - [x] Playbooks & Plays
