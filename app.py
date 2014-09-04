@@ -11,7 +11,7 @@ app = Bottle(__name__)
 debug(True)
 
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
-VERSION='v0.22 beta'
+VERSION='v0.23 beta'
 
 @app.route('/status')
 def status():
@@ -34,6 +34,7 @@ def do_cool_things():
     lsyncd = str(request.forms.get('lsyncd'))
     memcached = str(request.forms.get('memcached'))
     varnishd = str(request.forms.get('varnishd'))
+    lamp = str(request.forms.get('lamp'))
 
     test_results = helper.input_validation(sshpass, ip_addr)
     if test_results != 'success':
@@ -41,6 +42,14 @@ def do_cool_things():
     ip_addr += ','
 
     # Test which plays were selected
+    if lamp != 'None':
+        plays.append('{ role: IUS-repos, tags: ius-repos }')
+        plays.append('apache2')
+        plays.append('php5')
+        plays.append('{ role: mysql, tags: mysql }')
+        plays.append('{ role: phpmyadmin, tags: phpmyadmin }')
+        plays.append('{ role: holland, tags: holland }')
+
     if lsyncd != 'None':
         plays.append(lsyncd)
 
@@ -54,9 +63,8 @@ def do_cool_things():
     # write the playbook, then pass off to celery to run
     playbook = helper.write_playbook(plays)
 
-    install_stuff.delay(ip_addr, sshpass, playbook)
-
-    return template('answer', answer='We are working on it...', status='Your Job has been received.', version=VERSION)
+    task = install_stuff.delay(ip_addr, sshpass, playbook)
+    return template('answer', status='Job request received...', answer='Your Job ID: ' + str(task), version=VERSION)
 
 if __name__ == '__main__':
     app.run()

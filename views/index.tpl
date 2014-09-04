@@ -13,11 +13,12 @@
     <td align=center><strong>Rack Pass: </strong><input type="text" name="ssh_pass"></td>
   </tr>
   <tr>
-    <td align=center><input type="checkbox" name="lsyncd" value="lsyncd">lsyncd</td>
+    <td align=center><input type="checkbox" name="lamp" value="lamp">LAMP</td>
     <td align=center><input type="checkbox" name="varnishd" value="varnishd">varnish</td>
   </tr>
   </tr>
-    <td colspan='2' align=center><input type="checkbox" name="memcached" value="memcached">memcached</td>
+    <td align=center><input type="checkbox" name="memcached" value="memcached">memcached</td>
+    <td align=center><input type="checkbox" name="lsyncd" value="lsyncd">lsyncd</td>
   </tr>
   <tr>
     <td><br /></td>
