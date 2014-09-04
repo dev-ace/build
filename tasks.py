@@ -25,10 +25,13 @@ def install_stuff(ip_list, sshpass, pb_name):
     )
     results = pb.run()
     if results[ip_list[:-1]]['unreachable'] != 0:
+        os.remove(pb_name)
+        raise RuntimeError('df//' + ip_list[:-1] + '//' + '1' + '//fd')
+
+    if results[ip_list[:-1]]['failures'] != 0:
+        os.remove(pb_name)
         raise RuntimeError('df//' + ip_list[:-1] + '//' + '1' + '//fd')
 
     os.remove(pb_name)
-    fail = str(results[ip_list[:-1]]['failures'])
-   
-    ans = '//' + ip_list[:-1] + '//' + fail + '//'
+    ans = '//' + ip_list[:-1] + '//0//'
     return ans

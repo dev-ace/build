@@ -11,7 +11,7 @@ app = Bottle(__name__)
 debug(True)
 
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
-VERSION='Build Assistant v0.19 beta'
+VERSION='v0.22 beta'
 
 @app.route('/status')
 def status():
