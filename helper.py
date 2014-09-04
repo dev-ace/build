@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import re, uuid
 
 ANS_PATH='/var/www/vhosts/build/ansible/'

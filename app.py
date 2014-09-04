@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #pip install ansible pyyaml jinja2 paramiko bottle
-import urllib, json, helper
+import urllib, json, helper, db
 from bottle import Bottle, request, template, TEMPLATE_PATH
 from tasks import install_stuff
 
@@ -11,11 +11,18 @@ app = Bottle(__name__)
 debug(True)
 
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
+VERSION='Build Assistant v0.19 beta'
+
+@app.route('/status')
+def status():
+    # Return template of status
+    data = db.read()
+    return template('status', version=VERSION, data=data)
 
 @app.route('/')
 def index():
     # Return index template on GET or HEAD requests
-    return template('index')
+    return template('index', version=VERSION)
 
 @app.route('/', method=['POST'])
 def do_cool_things():
@@ -30,7 +37,7 @@ def do_cool_things():
 
     test_results = helper.input_validation(sshpass, ip_addr)
     if test_results != 'success':
-        return template('answer', answer=test_results, status='Error!')
+        return template('answer', answer=test_results, status='Error!', version=VERSION)
     ip_addr += ','
 
     # Test which plays were selected
@@ -49,7 +56,7 @@ def do_cool_things():
 
     install_stuff.delay(ip_addr, sshpass, playbook)
 
-    return template('answer', answer='We think...', status='Complete!')
+    return template('answer', answer='We are working on it...', status='Your Job has been received.', version=VERSION)
 
 if __name__ == '__main__':
     app.run()
