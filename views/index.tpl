@@ -18,7 +18,8 @@
   </tr>
   </tr>
     <td align=center><input type="checkbox" name="memcached" value="memcached">memcached</td>
-    <td align=center><input type="checkbox" name="lsyncd" value="lsyncd">lsyncd</td>
+    <td align=center><input type="checkbox" name="lsyncd" value="lsyncd">lsyncd
+    </td>
   </tr>
   <tr>
     <td><br /></td>
@@ -26,7 +27,7 @@
   <tr>
     <td colspan='2' align=center>
       <input type="submit" value="Install the things!">
-     <input type="reset" value="Clear Form"></form>
+     <input type="reset" value="Clear"></form>
     </td>
   </tr>
   <tr>
