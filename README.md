@@ -2,7 +2,7 @@
 
 ## DESCRIPTION:
 
-Front-end User Interface is written in Python/Bottle.  Backend is a programatically driven configuration management function written in Python via the Ansbile API that executes chosen Ansible plays on a user specified server.  Ansible plays are executed asynchronously via rabbitmq/celery worker, and a mysql database with "In Progress" and "Complete" tasks with a status of either "Sucessful" or "Failed" is maintained.  User can query this database of task conditions via a status page.
+Front-end User Interface is written in Python/Bottle.  Backend is a programatically driven agentless orchestration function written in Python that leverages the Ansbile API library and executes the chosen Ansible plays on a user specified server.  Ansible plays are executed asynchronously via rabbitmq/celery worker, and a mysql database of "In Progress" and "Complete" tasks with a status of either "Sucessful" or "Failed" is maintained.  User can query this database of task conditions via a status page.
 
 ## REQUIREMENTS:
 
