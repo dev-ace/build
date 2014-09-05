@@ -10,7 +10,7 @@
 <form method="POST">
   <tr>
     <td align=center><strong>IP Address: </strong><input type="text" name="ip_addr"></td>
-    <td align=center><strong>Rack Pass: </strong><input type="text" name="ssh_pass"></td>
+    <td align=center><strong>Rack Pass: </strong><input type="password" name="ssh_pass"></td>
   </tr>
   <tr>
     <td align=center><input type="checkbox" name="lamp" value="lamp">LAMP</td>
@@ -24,16 +24,17 @@
     <td><br /></td>
   </tr>
   <tr>
-    <td align=right><input type="submit" value="Install the things!"></td>
-    <td align=left><input type="reset" value="Clear Form"></center></td>
+    <td colspan='2' align=center>
+      <input type="submit" value="Install the things!">
+     <input type="reset" value="Clear Form"></form>
+    </td>
   </tr>
   <tr>
     <td><br /></td>
   </tr>
   <tr>
-    <td colspan='2' align=center><strong>Check the <a href="/status">Status</a> of a task</strong></td>
+    <td colspan='2' align=center><button onClick="window.location.href='/status'">Status</button></td>
   </tr>
 </table>
-</form>
 <span style="position: absolute; bottom: 5pt; left: 5pt;"><a href="https://github.com/zully/build" target="_blank">Build Assistant</a></span>
 <span style="position: absolute; bottom: 5pt; right: 5pt;"><a href="mailto:christopher.hidalgo@rackspace.com">Feedback?</a></span>

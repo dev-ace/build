@@ -7,6 +7,26 @@
 <img src="/static/build.png" align="right" height="64" width="64">
 <center><strong>Welcome to the Build Assistant {{ version }}</center></strong><br><br>
 
+                <center><strong><font color='green'><h2>In Progress</h2></center></strong></font><hr>
+                %if prog:
+                  % for row in prog:
+                  <table align=center width=80%>
+                  <tr>
+                    <td width="40%">ID: {{ row[0] }} </td>
+                    <td width="20%">IP: {{ row[1] }} </td>
+                    <td width="40%">Tasks: {{ row[2] }} </td>
+                  </tr>
+                  </table>
+                  <hr>
+                  %end
+                %else:
+                  <table align=center width=80%><tr><td><center><h3>No tasks to display</h3></center></td></tr></table><hr>
+                %end
+                <br /><br /><br />
+
+
+
+                <center><strong><font color='green'><h2>Completed < 60 Min</h2></center></strong></font><hr>
                 %if data:
                   % for row in data:
                   <table align=center width=80%>
@@ -32,10 +52,10 @@
                   %end
                 %end
                 %if not data:
-                  <h3><center>There are no processes to display</center></h3>
+                  <table align=center width=80%><tr><td><center><h3>No tasks to display</h3></center></td></tr></table><hr>
                 %end
 
-<center><FORM><INPUT Type="button" VALUE="Go Back" onClick="history.go(-1);return true;"></FORM></center>
+<center><button onClick="window.location.href='/'">Main Page</button></center>
 
 <span style="position: absolute; bottom: 5pt; left: 5pt;"><a href="https://github.com/zully/build" target="_blank">Build Assistant</a></span>
 <span style="position: absolute; bottom: 5pt; right: 5pt;"><a href="mailto:christopher.hidalgo@rackspace.com">Feedback?</a></span>

@@ -17,7 +17,27 @@ def input_validation(sshpass, ip_addr):
     return 'success'
 
 ## Write the plays that were taken from user input to a file
-def write_playbook(plays):
+def write_playbook(req_list):
+
+    plays = []
+    # Test which plays were selected
+    if 'LAMP' in req_list:
+        plays.append('{ role: IUS-repos, tags: ius-repos }')
+        plays.append('apache2')
+        plays.append('php5')
+        plays.append('{ role: mysql, tags: mysql }')
+        plays.append('{ role: phpmyadmin, tags: phpmyadmin }')
+        plays.append('{ role: holland, tags: holland }')
+
+    if 'lsyncd' in req_list:
+        plays.append('lsyncd')
+
+    if 'memcached' in req_list:
+        plays.append('memcached')
+
+    if 'varnishd' in req_list:
+        plays.append('varnishd')
+
     filename = ANS_PATH + str(uuid.uuid1())
     f = open(filename, 'w')
     f.write('---\n')

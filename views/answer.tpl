@@ -9,8 +9,8 @@
 
 <center><strong>{{ status }}</center></strong><br><br>
 <center><strong>{{ answer }}</center></strong><br><br></font>
-<center><FORM><INPUT Type="button" VALUE="Go Back" onClick="history.go(-1);return true;"></FORM></center>
-<br><br><center><strong>Check the <a href="/status">Status</a> of a task</strong></center>
+<center><button onClick="window.location.href='/'">Main Page</button>
+<button onClick="window.location.href='/status'">Status</button></center>
 
 <span style="position: absolute; bottom: 5pt; left: 5pt;"><a href="https://github.com/zully/build" target="_blank">Build Assistant</a></span>
 <span style="position: absolute; bottom: 5pt; right: 5pt;"><a href="mailto:christopher.hidalgo@rackspace.com">Feedback?</a></span>

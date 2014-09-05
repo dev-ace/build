@@ -11,13 +11,14 @@ app = Bottle(__name__)
 debug(True)
 
 TEMPLATE_PATH.insert(0,'/var/www/vhosts/build/views/')
-VERSION='v0.27 beta'
+VERSION='v0.0.31 beta'
 
 @app.route('/status')
 def status():
     # Return template of status
-    data = db.read()
-    return template('status', version=VERSION, data=data)
+    data = db.read_completed()
+    prog = db.read_in_progress()
+    return template('status', version=VERSION, data=data, prog=prog)
 
 @app.route('/')
 def index():
@@ -27,7 +28,7 @@ def index():
 @app.route('/', method=['POST'])
 def do_cool_things():
     plays = []
-    
+    req_list = []    
     # Collect all the information to make the server from the form fields
     sshpass = str(request.forms.get('ssh_pass'))
     ip_addr = str(request.forms.get('ip_addr'))
@@ -43,27 +44,17 @@ def do_cool_things():
 
     # Test which plays were selected
     if lamp != 'None':
-        plays.append('{ role: IUS-repos, tags: ius-repos }')
-        plays.append('apache2')
-        plays.append('php5')
-        plays.append('{ role: mysql, tags: mysql }')
-        plays.append('{ role: phpmyadmin, tags: phpmyadmin }')
-        plays.append('{ role: holland, tags: holland }')
-
+        req_list.append('LAMP')
     if lsyncd != 'None':
-        plays.append(lsyncd)
-
+        req_list.append('lsyncd')
     if memcached != 'None':
-        plays.append(memcached)
-
+        req_list.append('memcached')
     if varnishd != 'None':
-        plays.append(varnishd)
-
+        req_list.append('varnishd')
     
-    # write the playbook, then pass off to celery to run
-    playbook = helper.write_playbook(plays)
+    # Pass off to celery to run
+    task = install_stuff.delay(ip_addr, sshpass, req_list)
 
-    task = install_stuff.delay(ip_addr, sshpass, playbook)
     return template('answer', status='Job request received...', answer='Your Job ID: ' + str(task), version=VERSION)
 
 if __name__ == '__main__':
