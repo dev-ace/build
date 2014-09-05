@@ -1,10 +1,10 @@
-#Build Assistant
+## Build Assistant
 
-## DESCRIPTION:
+### DESCRIPTION:
 
 Front-end User Interface is written in Python/Bottle.  Backend is a programatically driven agentless orchestration function written in Python that leverages the Ansbile API library and executes the chosen Ansible plays on a user specified server.  Ansible plays are executed asynchronously via rabbitmq/celery worker, and a mysql database of "In Progress" and "Complete" tasks with a status of either "Sucessful" or "Failed" is maintained.  User can query this database of task conditions via a status page.
 
-## REQUIREMENTS:
+### REQUIREMENTS:
 
 - Python 2.7+
 - Ansible 1.6
@@ -14,11 +14,11 @@ Front-end User Interface is written in Python/Bottle.  Backend is a programatica
 - RabbitMQ
 - Nginx
 
-## USAGE:
+### USAGE:
 
 This app will be used to speed up the installation of various services during a Cloud "build-out"
 
-## TO DO:
+### TO DO:
 
 * - [x] UI
   * - [x] Basic Functionality
@@ -41,7 +41,7 @@ This app will be used to speed up the installation of various services during a 
 
 A more comprehensive list will be added as warranted.
 
-## LICENSE:
+### LICENSE:
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
