@@ -22,22 +22,26 @@ This app will be used to speed up the installation of various services during a 
 
 * - [x] UI
   * - [x] Basic Functionality
+  * - [x] Status Page of Tasks
+  * - [ ] Make it pretty
+  * - [ ] Testing
+* - [x] General Functionality
   * - [x] Use rack user
   * - [x] Error Checking
     * - [x] Some error checking in place, much more needed
   * - [x] Unique playbook name writen in realtime
   * - [x] Threading for scalability
     * - [x] begun passing work to celery
-  * - [x] Status Page of Tasks
-  * - [ ] Make it pretty
   * - [ ] Testing
 * - [x] Playbooks & Plays
   * - [x] lsyncd
-    * - [ ] testing
+    * - [x] Testing - Basic (More thorough testing needed)
   * - [x] varnishd
-    *  - [ ] testing
+    * - [x] Testing - Basic (More thorough testing needed)
   * - [x] memcached
-    * - [ ] testing
+    * - [x] Testing - Basic (More thorough testing needed)
+  * - [x] LAMP
+    * - [x] Testing - This is the most vetted play (forked from other repo)
 
 A more comprehensive list will be added as warranted.
 
