@@ -50,3 +50,14 @@
 
 - name: Add more inotify watches
   sysctl: name=fs.inotify.max_user_watches value=16384 state=present reload=yes ignoreerrors=yes
+
+- name: Create lsyncd directory
+  file: path=/etc/lsyncd/ state=directory mode=0755
+
+- name: Create ip list file
+  file: path=/etc/lsyncd/servers.conf state=touch mode=0644
+
+- name: Delete install directory and tarball
+  command: rm -rf /root/lsyncd-2.1.5 /root/lsyncd-2.1.5.tar.gz
+
+

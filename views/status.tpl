@@ -20,7 +20,7 @@
                   <hr>
                   %end
                 %else:
-                  <table align=center width=80%><tr><td><center><h3>No tasks to display</h3></center></td></tr></table><hr>
+                  <table align=center width=80%><tr><td><center><strong>No tasks to display</strong></center></td></tr></table><hr>
                 %end
                 <br /><br /><br />
 
@@ -52,7 +52,7 @@
                   %end
                 %end
                 %if not data:
-                  <table align=center width=80%><tr><td><center><h3>No tasks to display</h3></center></td></tr></table><hr>
+                  <table align=center width=80%><tr><td><center><strong>No tasks to display</strong></center></td></tr></table><hr>
                 %end
 
 <center><button onClick="window.location.href='/'">Main Page</button></center>

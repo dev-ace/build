@@ -8,7 +8,7 @@ def conn():
 def read_completed(table_name='celery_taskmeta'):
     con = conn()
     cursor = con.cursor()
-    statement = ('SELECT task_id, status, date_done, result FROM ' + table_name + ' WHERE date_done >= now() - INTERVAL 1 HOUR')
+    statement = ('SELECT task_id, status, date_done, result FROM ' + table_name + ' WHERE date_done >= now() + INTERVAL 4 HOUR')
     cursor.execute(statement)
     output = cursor.fetchall()
     statement = ('SELECT task_id, ip_addr, requested FROM in_progress')

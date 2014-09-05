@@ -3,3 +3,4 @@ env/**
 worker.pid
 celery.log
 config.py
+celeryconfig.*
