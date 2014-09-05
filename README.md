@@ -6,7 +6,13 @@ Front-end User Interface is written in Python/Bottle.  Backend is a programatica
 
 ## REQUIREMENTS:
 
+Python 2.7+
 Ansible 1.6
+UWSGI
+Celery
+MySQL 5.5
+RabbitMQ
+Nginx
 
 ## USAGE:
 
